@@ -1,16 +1,16 @@
 package entities;
 
-import org.springframework.context.annotation.Primary;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.Data;
+
+import javax.persistence.MappedSuperclass;
 import java.sql.Date;
+import java.sql.Timestamp;
 
+@Data
+@MappedSuperclass
 public class HvssObject {
-
-
-    protected Date creationDate;
-    protected  Date lastUpdateDate;
-
+    Timestamp creationDate;
+    Timestamp lastUpdateDate;
+    String uid;
 }

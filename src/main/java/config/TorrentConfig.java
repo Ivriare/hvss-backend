@@ -1,11 +1,11 @@
 package config;
 
+import lombok.Data;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
-@Configuration
-@PropertySource("classpath:foo.properties")
+@Data
 public class TorrentConfig {
 
-
+    private int seedTime;
+    private String torrentFileFolder;
 }

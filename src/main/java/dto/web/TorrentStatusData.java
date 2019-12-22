@@ -1,14 +1,15 @@
 package dto.web;
 
+import com.turn.ttorrent.client.Client;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class TorrentInfo {
+public class TorrentStatusData {
 
     String torrentName;
-    int downloadPercentage;
+    Client.ClientState torrentStatus;
     Date downloadDate;
 
 }

@@ -1,68 +1,76 @@
 package web;
 
-import dto.web.AddTorrentInfo;
-import dto.web.TorrentInfo;
+import com.turn.ttorrent.client.Client;
+import dto.web.TorrentData;
+import dto.web.TorrentStatusData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import services.TorrentService;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
-@RestController("torrent")
+@RestController
+@RequestMapping("torrent")
 public class TorrentController {
 
     @Autowired
     TorrentService torrentService;
 
-    @GetMapping("/getAllInfo")
-    public ResponseEntity<List<TorrentInfo>> getTorrentInfo(){
-        return new ResponseEntity<>(Collections.emptyList(), HttpStatus.ACCEPTED);
+    @GetMapping(value = "/getAllInfo")
+    public ResponseEntity<Map<String, Client.ClientState>> getTorrentInfo(){
+        return new ResponseEntity<>(torrentService.getTorrentStatuses(), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<String> deleteTorrentFile(@PathVariable Long id){
         torrentService.deleteTorrentFile(id);
 
         return new ResponseEntity<>("", HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/add")
-    public ResponseEntity<String> addTorrentFile(@RequestBody AddTorrentInfo addTorrentInfo){
-        torrentService.addTorrent(addTorrentInfo);
+    @PostMapping(value = "/content/add/{id}")
+    public ResponseEntity<String> addContentTorrentFile(@PathVariable Long id, @RequestBody TorrentData torrentData){
+        torrentService.addContentTorrentFile(id, torrentData);
 
         return new ResponseEntity<>("", HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/download/start/{id}")
+    @PostMapping(value = "/contentelement/add/{id}")
+    public ResponseEntity<String> addContentElementTorrentFile(@PathVariable Long id, @RequestBody TorrentData torrentData){
+        torrentService.addContentElementTorrentFile(id, torrentData);
+
+        return new ResponseEntity<>("", HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(value = "/download/start/{id}")
     public ResponseEntity<String> downloadStartTorrentFile(@PathVariable Long id){
         torrentService.downloadStartTorrentFile(id);
 
         return new ResponseEntity<>("", HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/download/stop/{id}")
+    @GetMapping(value = "/download/stop/{id}")
     public ResponseEntity<String> downloadStopTorrentFile(@PathVariable Long id){
         torrentService.downloadStopTorrentFile(id);
 
         return new ResponseEntity<>("", HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/download/start")
+    @GetMapping(value = "/download/start")
     public ResponseEntity<String> downloadStart(){
         torrentService.downloadStart();
 
         return new ResponseEntity<>("", HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/download/stop")
+    @GetMapping(value = "/download/stop")
     public ResponseEntity<String> downloadStop(){
         torrentService.downloadStop();
 
