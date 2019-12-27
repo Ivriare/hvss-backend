@@ -37,8 +37,6 @@ public class ContentService {
         HvssContentGroup hvssContentGroup = new HvssContentGroup();
         hvssContentGroup.setName(contentGroupData.getContentGroupName());
         hvssContentGroup.setContentTypeId(contentGroupData.getContentType());
-        hvssContentGroup.setCreationDate(new Timestamp((System.currentTimeMillis())));
-        hvssContentGroup.setLastUpdateDate(new Timestamp((System.currentTimeMillis())));
         hvssContentGroup.setUid(hashIdentifierUtils.createNewHashId());
         hvssContentGroupDao.persist(hvssContentGroup);
     }
@@ -59,8 +57,6 @@ public class ContentService {
         HvssContent hvssContent = new HvssContent();
         hvssContent.setContentName(contentData.getName());
         hvssContent.setContentDescription(contentData.getDesc());
-        hvssContent.setCreationDate(new Timestamp((System.currentTimeMillis())));
-        hvssContent.setLastUpdateDate(new Timestamp((System.currentTimeMillis())));
         hvssContent.setContentGroup(hvssContentGroupDao.findById(id));
         hvssContent.setUid(hashIdentifierUtils.createNewHashId());
         hvssContentDao.merge(hvssContent);

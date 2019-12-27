@@ -1,6 +1,5 @@
 package entities.torrent;
 
-import entities.content.HvssContentObject;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,12 +8,12 @@ import java.sql.Timestamp;
 @Data
 @Entity
 @Table(name = "HVSS_TORRENT_DATA")
-public class TorrentDataEntity {
+public class HvssTorrentDataEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private String uid;
+    private String uid; //TODO change uid to oid as it refers to objectID not user id.... -_-
 
     private String torrentFileURL;
     private String torrentName;

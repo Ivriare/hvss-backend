@@ -1,10 +1,12 @@
 package dto.web;
 
-import entities.content.HvssContentTypeEnum;
+import entities.torrent.HvssTorrentTypeEnum;
 import lombok.Data;
 
 @Data
 public class TorrentData {
     String fileURL;
     String contentName;
+    String oid;
+    HvssTorrentTypeEnum hvssTorrentTypeEnum;
 }

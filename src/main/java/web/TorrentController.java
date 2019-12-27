@@ -1,8 +1,7 @@
 package web;
 
-import com.turn.ttorrent.client.Client;
+import dto.node.HvssNodeTorrentInfoData;
 import dto.web.TorrentData;
-import dto.web.TorrentStatusData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import services.TorrentService;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,28 +20,27 @@ public class TorrentController {
     @Autowired
     TorrentService torrentService;
 
-    @GetMapping(value = "/getAllInfo")
-    public ResponseEntity<Map<String, Client.ClientState>> getTorrentInfo(){
-        return new ResponseEntity<>(torrentService.getTorrentStatuses(), HttpStatus.ACCEPTED);
+    @GetMapping(value = "/status")
+    public ResponseEntity<List<HvssNodeTorrentInfoData>> getAllTorrentInfo(){
+        return new ResponseEntity<>(torrentService.getAllTorrentDataList(), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(value = "/status/{id}")
+    public ResponseEntity<HvssNodeTorrentInfoData> getTorrentInfo(@PathVariable String oid){
+        return new ResponseEntity<>(torrentService.getTorrentData(oid), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<String> deleteTorrentFile(@PathVariable Long id){
+    public ResponseEntity<String> deleteTorrentFile(@PathVariable String id){
         torrentService.deleteTorrentFile(id);
 
         return new ResponseEntity<>("", HttpStatus.ACCEPTED);
     }
 
+    //ContentObject OID
     @PostMapping(value = "/content/add/{id}")
-    public ResponseEntity<String> addContentTorrentFile(@PathVariable Long id, @RequestBody TorrentData torrentData){
-        torrentService.addContentTorrentFile(id, torrentData);
-
-        return new ResponseEntity<>("", HttpStatus.ACCEPTED);
-    }
-
-    @PostMapping(value = "/contentelement/add/{id}")
-    public ResponseEntity<String> addContentElementTorrentFile(@PathVariable Long id, @RequestBody TorrentData torrentData){
-        torrentService.addContentElementTorrentFile(id, torrentData);
+    public ResponseEntity<String> addContentTorrentFile(@PathVariable String oid, @RequestBody TorrentData torrentData){
+        torrentService.addTorrentFileToContentObject(oid, torrentData);
 
         return new ResponseEntity<>("", HttpStatus.ACCEPTED);
     }

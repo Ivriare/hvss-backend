@@ -1,8 +1,7 @@
-package entities.content;
+package entities;
 
-import dto.web.TorrentData;
-import entities.HvssObject;
-import entities.torrent.TorrentDataEntity;
+import entities.file.HvssFileLocationTypeEnum;
+import entities.torrent.HvssTorrentDataEntity;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,5 +12,7 @@ public class HvssContentObject extends HvssObject {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "TORRENT_DATA_ID", referencedColumnName = "id")
-    private TorrentDataEntity torrentData;
+    private HvssTorrentDataEntity torrentData;
+    private Boolean torrentVerified;
+
 }
