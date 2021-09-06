@@ -9,6 +9,7 @@ import entities.user.HvssUser;
 import entities.user.HvssUserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -23,17 +24,19 @@ public class HvssUserTokenDaoImpl extends HvssDaoImpl<Long, HvssUserToken> imple
     EntityManager entityManager;
 
     @Override
-    public HvssUserToken getTokenIdByTokenUid(String uid, String sessionToken) {
-        String query = "from " + entityClass.getName() + " c where uid = :uid AND SESSION_TOKEN = :sessionToken";
+    public HvssUserToken getTokenIdByTokenUid(String oid, String sessionToken) {
+        String query = "from " + entityClass.getName() + "  c where oid = :oid AND session_token = :sessionToken";
         Query q = entityManager.createQuery(query);
-        q.setParameter("uid", uid);
-        q.setParameter("sessionToken", sessionToken);
+        q.setParameter("oid",  oid == null ? "" : oid);
+        q.setParameter("sessionToken", sessionToken == null ? "" : sessionToken);
 
         try {
-            return (HvssUserToken) q.getSingleResult();
-        } catch (NoResultException e){
-            return null;
-        } catch (PersistenceException e){
+            if(q.getResultList().size() > 0){
+                return (HvssUserToken) q.getResultList().get(0);
+            } else {
+                return null;
+            }
+        } catch (PersistenceException | UnexpectedRollbackException e){
             return null;
         }
     }

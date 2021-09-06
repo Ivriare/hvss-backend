@@ -14,4 +14,5 @@ public interface HvssUserDao extends HvssDao<Long , HvssUser> {
     HvssUser findUserByUsernameAndPassword(UserAuthenticationData userAuthenticationData);
     HvssUser findUserByUserTokenId(Long userTokenId);
     HvssUser findUserByRememberTokenId(String rememberToken);
+    HvssUser findUserByEmail(String email);
 }
